@@ -13,11 +13,12 @@ import java.util.List;
 
 @Slf4j
 @RestController
-public class UserController {
+public class UserController extends Controller<User> {
     private List<User> users = new ArrayList<>();
 
     @ResponseBody
     @PostMapping(value = "/users")
+    @Override
     public User create(@RequestBody User user, HttpServletResponse response) {
 
         try{
@@ -37,6 +38,7 @@ public class UserController {
 
     @ResponseBody
     @PutMapping(value = "/users")
+    @Override
     public User update(@RequestBody User user, HttpServletResponse response) {
         try{
             Validate.validateOrGetException(user, response);
@@ -61,7 +63,8 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public List<User> getUsers() {
+    @Override
+    public List<User> getAll() {
         return users;
     }
 

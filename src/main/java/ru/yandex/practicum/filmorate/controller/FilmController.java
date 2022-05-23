@@ -10,13 +10,16 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Slf4j
 @RestController
-public class FilmController {
+public class FilmController extends Controller<Film>{
+
     private final List<Film> films = new ArrayList<>();
 
     @ResponseBody
     @PostMapping(value = "/films")
+    @Override
     public Film create(@RequestBody Film film, HttpServletResponse response) {
         try{
             Validate.validateOrGetException(film, response);
@@ -31,6 +34,7 @@ public class FilmController {
 
     @ResponseBody
     @PutMapping(value = "/films")
+    @Override
     public Film update(@RequestBody Film film, HttpServletResponse response) {
         try{
             Validate.validateOrGetException(film, response);
@@ -51,7 +55,8 @@ public class FilmController {
     }
 
     @GetMapping("/films")
-    public List<Film> getFilms() {
+    @Override
+    public List<Film> getAll() {
         return films;
     }
 }
