@@ -1,11 +1,11 @@
 package ru.yandex.practicum.filmorate.model;
 
 import lombok.*;
-
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -27,6 +27,24 @@ public class Film {
     private int getNewId(){
         counter=counter+1;
         return counter;
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(id);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Film)) return false;
+        Film film = (Film) o;
+        return id == film.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
 

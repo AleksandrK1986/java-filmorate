@@ -1,12 +1,12 @@
 package ru.yandex.practicum.filmorate.model;
 
 import lombok.*;
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -29,12 +29,21 @@ public class User {
         return counter;
     }
 
+    @Override
+    public String toString() {
+        return String.valueOf(id);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return id == user.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }
-/*
-Свойства model.User:
-целочисленный идентификатор — id;
-электронная почта — email;
-логин пользователя — login;
-имя для отображения — name;
-дата рождения — birthday.
- */
