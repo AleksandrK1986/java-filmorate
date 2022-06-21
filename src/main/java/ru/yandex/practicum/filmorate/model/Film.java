@@ -5,7 +5,9 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -23,10 +25,19 @@ public class Film {
     private LocalDate releaseDate;
     @Min(1)
     private long duration; //minutes
+    private Set<Integer> likes = new HashSet<>();
 
     private int getNewId(){
         counter=counter+1;
         return counter;
+    }
+
+    public void addLike(int id) {
+        likes.add(id);
+    }
+
+    public void removeLike(int id) {
+        likes.remove(id);
     }
 
     @Override
