@@ -7,7 +7,6 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -20,16 +19,22 @@ public class FilmController extends Controller<Film> {
         this.filmService = filmService;
     }
 
+    @Override
     @ResponseBody
     @PostMapping("/films")
-    public Film createFilm(@RequestBody Film film) {
-        return create(film);
+    public Film create(@RequestBody Film film) {
+        int idFilm = filmService.createFilm(film);
+        log.info("Создание фильма {}      Фильм с ID {} создан успешно", LocalDateTime.now(), film.toString());
+        return filmService.getFilm(idFilm);
     }
 
+    @Override
     @ResponseBody
     @PutMapping("/films")
-    public Film updateFilm(@RequestBody Film film) {
-        return update(film);
+    public Film update(@RequestBody Film film) {
+        filmService.updateFilm(film);
+        log.info("Обновление фильма {}      Фильм с ID {} обновлен успешно", LocalDateTime.now(), film.toString());
+        return filmService.getFilm(film.getId());
     }
 
     @Override
@@ -39,21 +44,10 @@ public class FilmController extends Controller<Film> {
     }
 
     @Override
-    void saveObject(Film film) {
-        filmService.createFilm(film);
-    }
-
-    @Override
-    void updateObject(Film film) {
-        filmService.updateFilm(film);
-    }
-
-    @Override
     @ResponseBody
     @GetMapping("/films/{id}")
     public Film getObject(@PathVariable int id) {
-        Film film = null;
-        film = filmService.getFilm(id);
+        Film film = filmService.getFilm(id);
         log.info("Получение фильма {}      Фильм с ID {} получен успешно", LocalDateTime.now(), id);
         return film;
     }
@@ -76,11 +70,7 @@ public class FilmController extends Controller<Film> {
 
     @GetMapping("/films/popular")
     public List<Film> getTopFilms(@RequestParam(value = "count", defaultValue = "10", required = false) int count) {
-        List<Film> topFilms = new ArrayList<>();
-        List<Film> films = filmService.getTopFilms();
-        for (int i = 0; i < count && i < films.size(); i++) {
-            topFilms.add(films.get(i));
-        }
+        List<Film> topFilms = filmService.getTopFilms(count);
         if (topFilms != null) {
             log.info("Получение популярных фильмов {}      Получение списка из самых популярных {} " +
                             "фильмов выполнено успешно", LocalDateTime.now(),

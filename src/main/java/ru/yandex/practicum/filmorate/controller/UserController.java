@@ -20,16 +20,22 @@ public class UserController extends Controller<User> {
         this.userService = userService;
     }
 
+    @Override
     @ResponseBody
     @PostMapping("/users")
-    public User createUser(@RequestBody User user) {
-        return create(ifEmptyNameRename(user));
+    public User create(@RequestBody User user) {
+        int idUser = userService.createUser(ifEmptyNameRename(user));
+        log.info("Создание пользователя {}      Пользователь с ID {} создан успешно", LocalDateTime.now(), user.toString());
+        return userService.getUser(idUser);
     }
 
+    @Override
     @ResponseBody
     @PutMapping("/users")
-    public User updateUser(@RequestBody User user) {
-        return update(ifEmptyNameRename(user));
+    public User update(@RequestBody User user) {
+        userService.updateUser(ifEmptyNameRename(user));
+        log.info("Обновление пользователя {}      Пользователь с ID {} обновлен успешно", LocalDateTime.now(), user.toString());
+        return userService.getUser(user.getId());
     }
 
     @Override
@@ -54,21 +60,10 @@ public class UserController extends Controller<User> {
     }
 
     @Override
-    void saveObject(User user) {
-        userService.createUser(user);
-    }
-
-    @Override
-    void updateObject(User user) {
-        userService.updateUser(user);
-    }
-
-    @Override
     @ResponseBody
     @GetMapping("/users/{id}")
     public User getObject(@PathVariable int id) {
-        User user = null;
-        user = userService.getUser(id);
+        User user = userService.getUser(id);
         log.info("Получение пользователя {}      Пользователь с ID {} получен успешно", LocalDateTime.now(), id);
         return user;
     }

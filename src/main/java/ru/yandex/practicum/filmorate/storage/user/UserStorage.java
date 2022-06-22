@@ -5,7 +5,7 @@ import ru.yandex.practicum.filmorate.model.User;
 import java.util.List;
 
 public interface UserStorage {
-    void addUserInStorage(User user);
+    int addUserInStorage(User user);
 
     void deleteUserInStorage(int id);
 

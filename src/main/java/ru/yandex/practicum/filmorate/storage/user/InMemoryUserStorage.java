@@ -14,9 +14,10 @@ public class InMemoryUserStorage implements UserStorage {
     private static int counter = 0;
 
     @Override
-    public void addUserInStorage(User user) {
+    public int addUserInStorage(User user) {
         user.setId(getNewId());
         usersInStorage.put(user.getId(), user);
+        return user.getId();
     }
 
     @Override

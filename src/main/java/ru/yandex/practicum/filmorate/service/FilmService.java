@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
+import ru.yandex.practicum.filmorate.validation.Validate;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -20,8 +21,9 @@ public class FilmService {
         this.userStorage = userStorage;
     }
 
-    public void createFilm(Film film) {
-        filmStorage.addFilmInStorage(film);
+    public int createFilm(Film film) {
+        Validate.validateOrGetException(film);
+        return filmStorage.addFilmInStorage(film);
     }
 
     public List<Film> getAllFilms() {
@@ -29,6 +31,7 @@ public class FilmService {
     }
 
     public void updateFilm(Film film) {
+        Validate.validateOrGetException(film);
         filmStorage.updateFilmInStorage(film);
     }
 
@@ -46,10 +49,11 @@ public class FilmService {
         filmStorage.updateFilmInStorage(film);
     }
 
-    public List<Film> getTopFilms() {
+    public List<Film> getTopFilms(int count) {
         List<Film> filmsForReturn = filmStorage.getAllFilmsInStorage().stream()
                 .filter(film -> film.getLikes() != null)
                 .sorted(Comparator.comparing(film -> film.getLikes().size(), Comparator.reverseOrder()))
+                .limit(count)
                 .collect(Collectors.toList());
         return filmsForReturn;
     }

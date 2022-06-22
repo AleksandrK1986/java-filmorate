@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
+import ru.yandex.practicum.filmorate.validation.Validate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +18,9 @@ public class UserService {
         this.userStorage = userStorage;
     }
 
-    public void createUser(User user) {
-        userStorage.addUserInStorage(user);
+    public int createUser(User user) {
+        Validate.validateOrGetException(user);
+        return userStorage.addUserInStorage(user);
     }
 
     public List<User> getAllUsers() {
@@ -26,6 +28,7 @@ public class UserService {
     }
 
     public void updateUser(User user) {
+        Validate.validateOrGetException(user);
         userStorage.updateUserInStorage(user);
     }
 

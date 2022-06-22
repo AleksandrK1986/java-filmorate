@@ -14,9 +14,10 @@ public class InMemoryFilmStorage implements FilmStorage {
     private static int counter = 0;
 
     @Override
-    public void addFilmInStorage(Film film) {
+    public int addFilmInStorage(Film film) {
         film.setId(getNewId());
         filmsInStorage.put(film.getId(), film);
+        return film.getId();
     }
 
     @Override
