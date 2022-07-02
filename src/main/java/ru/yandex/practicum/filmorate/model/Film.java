@@ -26,6 +26,8 @@ public class Film {
     @Min(1)
     private long duration; //minutes
     private Set<Integer> likes = new HashSet<>();
+    private Genre genre;
+    private Rating rating;
 
     private int getNewId(){
         counter=counter+1;
