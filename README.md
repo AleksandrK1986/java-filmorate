@@ -1,5 +1,5 @@
 # java-filmorate
-![ER_Filmorate](https://github.com/AleksandrK1986/java-filmorate/blob/main/ER_Filmorate.png)
+![ER_Filmorate](https://github.com/AleksandrK1986/java-filmorate/blob/main/ER_Filmorate_v2.png)
 
 Небольшое пояснение к ER диаграмме.
 - Две основные таблицы users и films.
@@ -38,9 +38,13 @@ SELECT *
 FROM users;
 
 -- getTopNFilms:
-SELECT *
-FROM films
-ORDER BY rating DESC
+SELECT 
+    f.name,
+    COUNT(l.film_id) AS count_likes
+FROM likes AS l
+LEFT JOIN films AS f ON l.film_id = f.id
+GROUP BY f.name
+ORDER BY count_likes DESC
 LIMIT N;
 
 -- getCommonFriends:
