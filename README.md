@@ -1,5 +1,5 @@
 # java-filmorate
-![ER_Filmorate](https://github.com/AleksandrK1986/java-filmorate/blob/main/ER_Filmorate.png)
+![ER_Filmorate](https://github.com/AleksandrK1986/java-filmorate/blob/main/ER_Filmorate_v3.png)
 
 Небольшое пояснение к ER диаграмме.
 - Две основные таблицы users и films.
@@ -9,26 +9,9 @@
 сразу две строки: первая для пользователя направившего приглашения на дружбу 
 (статус будет подтвержденный - true) и вторая для того кому направили (статус будет не подтверждена 
 false, до момента подтверждения).
-- Рейтинг и жанр оформлен в виде Enum (ниже приведены их значения).
+- Рейтинг и жанр оформлены в виде отдельных таблиц.
 Также ниже приведены примеры некоторых запросов.
-
-Enum genre_type {
-comedy
-drama
-cartoon
-thriller
-documentary
-fighter
-}
-
-Enum rating_type {
-g
-pg
-gp_13
-r
-nc_17
-}
-
+- 
 -- getAllFilms:
 SELECT *
 FROM films;
@@ -38,9 +21,13 @@ SELECT *
 FROM users;
 
 -- getTopNFilms:
-SELECT *
-FROM films
-ORDER BY rating DESC
+SELECT 
+    f.name,
+    COUNT(l.film_id) AS count_likes
+FROM likes AS l
+LEFT JOIN films AS f ON l.film_id = f.id
+GROUP BY f.name
+ORDER BY count_likes DESC
 LIMIT N;
 
 -- getCommonFriends:

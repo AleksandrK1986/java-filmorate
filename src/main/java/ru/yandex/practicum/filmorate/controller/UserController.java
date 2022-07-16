@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
 
+import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -32,7 +33,7 @@ public class UserController extends Controller<User> {
 
     @Override
     @GetMapping("/users")
-    public List<User> getAll() {
+    public Collection<User> getAll() {
         return userService.getAllUsers();
     }
 

@@ -9,6 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.Genre;
+import ru.yandex.practicum.filmorate.model.RatingMPA;
 
 import java.time.LocalDate;
 
@@ -28,8 +30,10 @@ public class FilmControllerTest {
 
     @Test
     void tryCreateFilmResponseIsOk() throws Exception {
+        //Genre genre = new Genre(1);
+        RatingMPA mpa = new RatingMPA(1);
         Film film = new Film(1, "name", "description", LocalDate.of(1985,12,28),
-                120, null, null, null);
+                120, 4, mpa, null);
         String body = mapper.writeValueAsString(film);
         this.mockMvc.perform(post("/films").content(body).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -37,8 +41,9 @@ public class FilmControllerTest {
 
     @Test
     void tryCreateFilmWithNegativeIdResponseIsBadRequest() throws Exception {
-        Film film = new Film(-1, "name", "description", LocalDate.of(1986,12,12),
-                120, null, null, null);
+        RatingMPA mpa = new RatingMPA(1);
+        Film film = new Film(-1, "name", "description", LocalDate.of(1985,12,28),
+                120, 4, mpa, null);
         String body = mapper.writeValueAsString(film);
         this.mockMvc.perform(post("/films").content(body).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
@@ -47,8 +52,9 @@ public class FilmControllerTest {
     //название не может быть пустым
     @Test
     void tryCreateFilmWithEmptyNameIsBadRequest() throws Exception {
+        RatingMPA mpa = new RatingMPA(1);
         Film film = new Film(1, "", "description", LocalDate.of(1986,12,12),
-                120, null, null, null);
+                120, 4, mpa, null);
         String body = mapper.writeValueAsString(film);
         this.mockMvc.perform(post("/films").content(body).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
@@ -57,9 +63,10 @@ public class FilmControllerTest {
     //максимальная длина описания — 200 символов
     @Test
     void tryCreateFilmLongDescriptionIsBadRequest() throws Exception {
+        RatingMPA mpa = new RatingMPA(1);
         String description = RandomString.make(201);
         Film film = new Film(1, "name", description, LocalDate.of(1986,12,12),
-                120, null, null, null);
+                120, 3, mpa, null);
         String body = mapper.writeValueAsString(film);
         this.mockMvc.perform(post("/films").content(body).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
@@ -67,9 +74,10 @@ public class FilmControllerTest {
 
     @Test
     void tryCreateFilmGoodDescriptionIsOk() throws Exception {
+        RatingMPA mpa = new RatingMPA(1);
         String description = RandomString.make(200);
         Film film = new Film(1, "name", description, LocalDate.of(1986,12,12),
-                120, null, null, null);
+                120, 3, mpa, null);
         String body = mapper.writeValueAsString(film);
         this.mockMvc.perform(post("/films").content(body).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -78,8 +86,9 @@ public class FilmControllerTest {
     //дата релиза — не раньше 28 декабря 1895 года
     @Test
     void tryCreateFilmWithBadReleaseDateIsBadRequest() throws Exception {
+        RatingMPA mpa = new RatingMPA(1);
         Film film = new Film(1, "", "description", LocalDate.of(1985,12,27),
-                120, null, null, null);
+                120, 3, mpa, null);
         String body = mapper.writeValueAsString(film);
         this.mockMvc.perform(post("/films").content(body).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
@@ -88,8 +97,9 @@ public class FilmControllerTest {
     //продолжительность фильма должна быть положительной
     @Test
     void tryCreateFilmWithNegativeDurationIsBadRequest() throws Exception {
+        RatingMPA mpa = new RatingMPA(1);
         Film film = new Film(1, "", "description", LocalDate.of(1985,12,28),
-                -120, null, null, null);
+                -120, 4, mpa, null);
         String body = mapper.writeValueAsString(film);
         this.mockMvc.perform(post("/films").content(body).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());

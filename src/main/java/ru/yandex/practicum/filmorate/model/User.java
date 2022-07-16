@@ -27,7 +27,7 @@ public class User {
     private String name;
     private LocalDate birthday;
     //private Set<Integer> friends = new HashSet<>();
-    private HashMap<Integer, Boolean> friends = new HashMap<>(); // <id друга, подтверждена ли дружба true/false>
+    //private HashMap<Integer, Boolean> friends = new HashMap<>(); // <id друга, подтверждена ли дружба true/false>
     // Для отправителя заявки на друзья будет стоять true, для получателя заявки в друзья будет стоять false,
     // пока не подтвердит. Возможно, при переходе на БД будет не актуально
 
@@ -36,6 +36,7 @@ public class User {
         return counter;
     }
 
+    /*
     public void addInFriends(int id) {
         //friends.add(id);
         friends.put(id, false);
@@ -44,6 +45,8 @@ public class User {
     public void removeInFriends(int id) {
         friends.remove(id);
     }
+    */
+
 
     @Override
     public String toString() {

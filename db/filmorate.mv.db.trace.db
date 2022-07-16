@@ -1,0 +1,4 @@
+2022-07-16 00:01:28 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "FILMS" не найдена
+Table "FILMS" not found; SQL statement:
+INSERT INTO PUBLIC.films () VALUES() [42102-200]

@@ -13,7 +13,7 @@ import java.util.NoSuchElementException;
 
 @Slf4j
 @ControllerAdvice(assignableTypes = {FilmController.class, UserController.class})
-public class ErrorHandler {
+public class  ErrorHandler {
 
     @ExceptionHandler
     public ResponseEntity<Map<String, String>> handleValidation(final ValidationException e) {

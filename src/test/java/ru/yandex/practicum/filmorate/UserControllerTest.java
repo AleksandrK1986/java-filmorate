@@ -28,7 +28,7 @@ public class UserControllerTest {
 
     @Test
     void tryCreateUserResponseIsOk() throws Exception {
-        User user = new User(1,"a@email.ru", "login", "name", LocalDate.of(1995, 12,12), null);
+        User user = new User(1,"a@email.ru", "login", "name", LocalDate.of(1995, 12,12));
         String body = mapper.writeValueAsString(user);
         this.mockMvc.perform(post("/users").content(body).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -36,7 +36,7 @@ public class UserControllerTest {
 
     @Test
     void tryCreateUserWithNegativeIdResponseIsBadRequest() throws Exception {
-        User user = new User(-1,"a@email.ru", "login", "name", LocalDate.of(1995, 12,12), null);
+        User user = new User(-1,"a@email.ru", "login", "name", LocalDate.of(1995, 12,12));
         String body = mapper.writeValueAsString(user);
         this.mockMvc.perform(post("/users").content(body).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
@@ -45,7 +45,7 @@ public class UserControllerTest {
     //электронная почта не может быть пустой и должна содержать символ @
     @Test
     void tryCreateUserWithBedMailResponseIsBadRequest() throws Exception {
-        User user = new User(1,"email.ru", "login", "name", LocalDate.of(1995, 12,12), null);
+        User user = new User(1,"email.ru", "login", "name", LocalDate.of(1995, 12,12));
         String body = mapper.writeValueAsString(user);
         this.mockMvc.perform(post("/users").content(body).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
@@ -54,7 +54,7 @@ public class UserControllerTest {
     //логин не может быть пустым и содержать пробелы
     @Test
     void tryCreateUserWithEmptyLoginResponseIsBadRequest() throws Exception {
-        User user = new User(1,"1@email.ru", "", "name", LocalDate.of(1995, 12,12), null);
+        User user = new User(1,"1@email.ru", "", "name", LocalDate.of(1995, 12,12));
         String body = mapper.writeValueAsString(user);
         this.mockMvc.perform(post("/users").content(body).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
@@ -63,7 +63,7 @@ public class UserControllerTest {
     //дата рождения не может быть в будущем
     @Test
     void tryCreateUserWithFutureBirthdayResponseIsBadRequest() throws Exception {
-        User user = new User(1,"1@email.ru", "login", "name", LocalDate.of(9995, 12,12), null);
+        User user = new User(1,"1@email.ru", "login", "name", LocalDate.of(9995, 12,12));
         String body = mapper.writeValueAsString(user);
         this.mockMvc.perform(post("/users").content(body).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
