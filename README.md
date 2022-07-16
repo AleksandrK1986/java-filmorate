@@ -1,5 +1,5 @@
 # java-filmorate
-![ER_Filmorate](https://github.com/AleksandrK1986/java-filmorate/blob/main/ER_Filmorate_v2.png)
+![ER_Filmorate](https://github.com/AleksandrK1986/java-filmorate/blob/main/ER_Filmorate_v3.png)
 
 Небольшое пояснение к ER диаграмме.
 - Две основные таблицы users и films.
