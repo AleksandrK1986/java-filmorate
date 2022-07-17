@@ -25,7 +25,6 @@ public class Film {
     private LocalDate releaseDate;
     @Min(1)
     private long duration; //minutes
-    //private Set<Integer> likes = new HashSet<>();
     private int rate;
     private RatingMPA mpa;
     private Set<Genre> genres = new HashSet<>();
@@ -34,14 +33,6 @@ public class Film {
         counter=counter+1;
         return counter;
     }
-
-    /*public void addLike(int id) {
-        likes.add(id);
-    }
-
-    public void removeLike(int id) {
-        likes.remove(id);
-    }*/
 
     @Override
     public String toString() {

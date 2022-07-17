@@ -12,7 +12,8 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 @Slf4j
-@ControllerAdvice(assignableTypes = {FilmController.class, UserController.class})
+@ControllerAdvice(assignableTypes = {FilmController.class, UserController.class,
+        GenreController.class, RatingController.class})
 public class  ErrorHandler {
 
     @ExceptionHandler

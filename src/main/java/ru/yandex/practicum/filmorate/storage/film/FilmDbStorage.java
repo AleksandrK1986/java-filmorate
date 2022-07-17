@@ -14,8 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.List;
-import java.util.NoSuchElementException;
+
 
 @Component
 @Qualifier("FilmDbStorage")
@@ -75,24 +74,46 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public Collection<Film> getAllFilmsInStorage() {
-        String sql = "select * from \"films\"";
+        String sql = "select " +
+                "\"f\".\"id\", " +
+                "\"f\".\"name\" \"f_name\", " +
+                "\"f\".\"description\", " +
+                "\"f\".\"release_date\", " +
+                "\"f\".\"duration\", " +
+                "\"f\".\"rate\", " +
+                "\"f\".\"rating_mpa\"," +
+                "\"rm\".\"name\" \"rm_name\"" +
+                "from \"films\" as \"f\" " +
+                "join \"rating_mpa\" as \"rm\" on \"rm\".\"id\" = \"f\".\"rating_mpa\"";
         return jdbcTemplate.query(sql, (rs, rowNum) -> makeFilm(rs));
     }
 
     @Override
     public Film getFilmInStorage(int id) {
-        String sql = "select * from \"films\" where \"id\" = ?";
+        String sql = "select " +
+                "\"f\".\"id\", " +
+                "\"f\".\"name\" \"f_name\", " +
+                "\"f\".\"description\", " +
+                "\"f\".\"release_date\", " +
+                "\"f\".\"duration\", " +
+                "\"f\".\"rate\", " +
+                "\"f\".\"rating_mpa\"," +
+                "\"rm\".\"name\" \"rm_name\"" +
+                "from \"films\" as \"f\" " +
+                "join \"rating_mpa\" as \"rm\" on \"rm\".\"id\" = \"f\".\"rating_mpa\" " +
+                "where \"f\".\"id\" = ? ";
         return jdbcTemplate.query(sql, (rs, rowNum) -> makeFilm(rs), id).get(0);
     }
     private Film makeFilm(ResultSet rs) throws SQLException {
         int id = rs.getInt("id");
-        String name = rs.getString("name");
+        String name = rs.getString("f_name");
         String description = rs.getString("description");
         LocalDate releaseDate = rs.getDate("release_date").toLocalDate();
         long duration = rs.getLong("duration");
         int rate = rs.getInt("rate");
         int mpaId = rs.getInt("rating_mpa");
-        RatingMPA mpa = new RatingMPA(mpaId);
+        String mpaName = rs.getString("rm_name");
+        RatingMPA mpa = new RatingMPA(mpaId, mpaName);
         return new Film(id, name, description, releaseDate, duration, rate, mpa, null);
     }
 }

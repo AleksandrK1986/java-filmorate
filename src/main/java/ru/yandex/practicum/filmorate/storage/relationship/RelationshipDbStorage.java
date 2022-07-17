@@ -2,12 +2,10 @@ package ru.yandex.practicum.filmorate.storage.relationship;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.model.Like;
 import ru.yandex.practicum.filmorate.model.Relationship;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collection;
 
 @Component
@@ -50,28 +48,4 @@ public class RelationshipDbStorage {
         boolean status = rs.getBoolean("relationship_status");
         return new Relationship(userId, friendId, status);
     }
-
-
-    /*
-    SELECT
-    r.friend_id
-    FROM relationship AS r
-    JOIN relationship AS rr ON r.friend_id = rr.friend_id
-    WHERE r.user_id = userId
-    AND rr.user_id = otherUserId;
-     */
-
-
-    /*
-    public void addLike(int filmId, int userId) {
-        String sqlQuery = "insert into \"likes\" values (?, ?)";
-        jdbcTemplate.update(sqlQuery, filmId, userId);
-    }
-
-    public void removeLike(int filmId, int userId) {
-        String sqlQuery = "delete from \"likes\" where \"film_id\" = ? AND \"user_id\" = ?";
-        jdbcTemplate.update(sqlQuery, filmId, userId);
-    }
-     */
-
 }

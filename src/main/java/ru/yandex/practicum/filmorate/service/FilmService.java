@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.Like;
-import ru.yandex.practicum.filmorate.model.RatingMPA;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.likes.LikeDbStorage;
 import ru.yandex.practicum.filmorate.storage.genre.GenreDbStorage;
@@ -46,7 +45,6 @@ public class FilmService {
     public Film createFilm(Film film) {
         Validate.validateOrGetException(film);
         if(film.getMpa() == null){
-            //film.setMpa(new RatingMPA(1));
             throw new ValidationException("В запросе отсутствует рейтинг MPA для фильма");
         }
         int idFilm = filmStorage.addFilmInStorage(film);
@@ -55,14 +53,22 @@ public class FilmService {
             genreDbStorage.getGenreById(g.getId()); //проверка что такой тип жанра есть
             genreDbStorage.addFilmGenre(idFilm, g.getId());
             log.info("Создание фильма {}      К фильму с ID {} добавлен жанр {} успешно",
-                    LocalDateTime.now(), idFilm, g.getName());
+                    LocalDateTime.now(), idFilm, genreDbStorage.getGenreById(g.getId()).getName());
         }
+
         return getFilm(idFilm);
     }
 
     public Collection<Film> getAllFilms() {
         Collection<Film> films;
         films = filmStorage.getAllFilmsInStorage();
+        for(Film f:films){
+            Collection<Genre> genres = genreDbStorage.getAllFilmGenres(f.getId());
+            Set<Genre> setGenres = new HashSet<Genre>(genres);
+            f.setGenres(setGenres);
+            log.info("Подготовка к получению списка фильмов {}      В фильм {} добавлены жанры успешно",
+                    LocalDateTime.now(), f.getId());
+        }
         if (films != null) {
             log.info("Получение списка фильмов {}      Фильмы получены успешно", LocalDateTime.now());
         } else {
@@ -77,10 +83,10 @@ public class FilmService {
         log.info("Обновление фильма {}      Фильм с ID {} обновлен успешно", LocalDateTime.now(), film.getId());
         genreDbStorage.removeFilmGenres(film.getId());
         for (Genre g: film.getGenres()){
-            genreDbStorage.getGenreById(g.getId()); //проверка что такой тип жанра есть
-                genreDbStorage.addFilmGenre(film.getId(), g.getId());
+            Genre newGenre = genreDbStorage.getGenreById(g.getId()); //проверка что такой тип жанра есть
+                genreDbStorage.addFilmGenre(film.getId(), newGenre.getId());
                 log.info("Обновление фильма {}      К фильму с ID {} добавлен жанр {} успешно",
-                        LocalDateTime.now(), film.getId(), g.getName());
+                        LocalDateTime.now(), film.getId(), newGenre.getName());
         }
         return getFilm(film.getId());
     }
@@ -92,7 +98,6 @@ public class FilmService {
         Film film = filmStorage.getFilmInStorage(filmId);
         Like like = new Like(filmId, userId);
         userStorage.getUserInStorage(userId); // контроль что такой пользователь есть
-        //film.addLike(userId);
         Set<Like> likes = new HashSet<Like>(likeDbStorage.getAllLikes(filmId));
         if(likes.contains(like)) {
             throw new ValidationException("Ошибка добавления лайка, такой лайк уже проставлен");
@@ -112,7 +117,6 @@ public class FilmService {
         Film film = filmStorage.getFilmInStorage(filmId);
         Like like = new Like(filmId, userId);
         userStorage.getUserInStorage(userId); // контроль что такой пользователь есть
-        //film.removeLike(userId);
         Set<Like> likes = new HashSet<Like>(likeDbStorage.getAllLikes(filmId));
         if(!likes.contains(like)) {
             throw new ValidationException("Ошибка удвления лайка, такой лайк не существует");
@@ -127,9 +131,7 @@ public class FilmService {
 
     public List<Film> getTopFilms(int count) {
         List<Film> filmsForReturn = filmStorage.getAllFilmsInStorage().stream()
-                //.filter(film -> film.getLikes() != null)
                 .filter(film -> film.getRate() != 0)
-                //.sorted(Comparator.comparing(film -> film.getLikes().size(), Comparator.reverseOrder()))
                 .sorted(Comparator.comparing(film -> film.getRate(), Comparator.reverseOrder()))
                 .limit(count)
                 .collect(Collectors.toList());
@@ -156,33 +158,4 @@ public class FilmService {
         return film;
     }
 
-    public Collection<Genre> getAllGenres() {
-        log.info("Получение списка жанров {}      Жанры получены успешно",
-                LocalDateTime.now());
-        return genreDbStorage.getAllGenres();
-    }
-
-    public Genre getGenreById(int id) {
-        if(id<=0){
-            throw new NoSuchElementException("Жанр с таким ID " + id + " не найден");
-        }
-        log.info("Получение жанра по ID {}      Жанр c ID {} получен успешно",
-                LocalDateTime.now(), id);
-        return genreDbStorage.getGenreById(id);
-    }
-
-    public Collection<RatingMPA> getAllMPA() {
-        log.info("Получение списка рейтингов {}      Рейтинги получены успешно",
-                LocalDateTime.now());
-        return ratingDbStorage.getAllMPA();
-    }
-
-    public RatingMPA getMPAById(int id) {
-        if(id<=0){
-            throw new NoSuchElementException("Рейтинг с таким ID " + id + " не найден");
-        }
-        log.info("Получение рейтинга по ID {}      Рейтинг c ID {} получен успешно",
-                LocalDateTime.now(), id);
-        return ratingDbStorage.getMPAById(id);
-    }
 }

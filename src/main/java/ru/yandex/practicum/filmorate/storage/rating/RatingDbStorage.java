@@ -2,7 +2,6 @@ package ru.yandex.practicum.filmorate.storage.rating;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.RatingMPA;
 
 import java.sql.ResultSet;
@@ -29,6 +28,7 @@ public class RatingDbStorage {
 
     private RatingMPA makeRating(ResultSet rs) throws SQLException {
         int id = rs.getInt("id");
-        return new RatingMPA(id);
+        String name = rs.getString("name");
+        return new RatingMPA(id, name);
     }
 }

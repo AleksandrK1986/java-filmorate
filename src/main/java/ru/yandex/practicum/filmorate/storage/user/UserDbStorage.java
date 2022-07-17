@@ -5,10 +5,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.RatingMPA;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -16,7 +13,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.List;
 
 @Component
 @Qualifier("UserDbStorage")

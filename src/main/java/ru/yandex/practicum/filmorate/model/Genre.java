@@ -6,11 +6,19 @@ import java.util.Objects;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class Genre {
     @NonNull
     int id;
+    String name;
+
+    public Genre(@NonNull int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public Genre(@NonNull int id) {
+        this.id = id;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -25,16 +33,4 @@ public class Genre {
         return Objects.hash(id);
     }
 
-    public String getName(){
-        String name = null;
-        switch (this.id){
-            case 1: name = "Комедия"; break;
-            case 2: name = "Драма"; break;
-            case 3: name = "Мультфильм"; break;
-            case 4: name = "Триллер"; break;
-            case 5: name = "Документальный"; break;
-            case 6: name = "Боевик"; break;
-        }
-        return name;
-    }
 }

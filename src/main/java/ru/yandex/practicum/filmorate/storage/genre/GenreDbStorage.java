@@ -2,15 +2,11 @@ package ru.yandex.practicum.filmorate.storage.genre;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
-import ru.yandex.practicum.filmorate.model.RatingMPA;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.Collection;
-import java.util.NoSuchElementException;
 
 @Component
 public class GenreDbStorage {
@@ -34,8 +30,8 @@ public class GenreDbStorage {
     }
 
     public Collection<Genre> getAllFilmGenres (int filmId) {
-        String sql = "select * from \"film_genre\" join \"genre_type\" " +
-                "on \"film_genre\".\"genre_id\" = \"genre_type\".\"id\" where \"film_id\" = ?";
+        String sql = "select \"GT\".\"id\", \"GT\".\"name\"  from \"film_genre\" AS \"FG\" join \"genre_type\" AS \"GT\" " +
+                "on \"FG\".\"genre_id\" = \"GT\".\"id\" where \"film_id\" = ?";
         return jdbcTemplate.query(sql, (rs, rowNum) -> makeGenre(rs), filmId);
     }
 
@@ -46,7 +42,7 @@ public class GenreDbStorage {
 
     private Genre makeGenre(ResultSet rs) throws SQLException {
         int id = rs.getInt("id");
-        return new Genre(id);
+        String name = rs.getString("name");
+        return new Genre(id, name);
     }
-
 }

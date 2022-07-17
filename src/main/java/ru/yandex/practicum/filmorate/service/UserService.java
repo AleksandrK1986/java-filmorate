@@ -62,10 +62,6 @@ public class UserService {
         User user = userStorage.getUserInStorage(userId);
         User friend = userStorage.getUserInStorage(friendId);
         Relationship newFriends = new Relationship(userId, friendId, true);
-        //user.addInFriends(friendId);
-        //friend.addInFriends(userId);
-        //userStorage.updateUserInStorage(user);
-        //userStorage.updateUserInStorage(friend);
         Set<Relationship> friends = new HashSet<Relationship>(relationshipDbStorage.getAllFriends(userId));
         if(friends.contains(newFriends)) {
            throw new ValidationException("Ошибка: у пользователя c ID " + userId + " уже есть друг с ID " + friendId);
@@ -80,10 +76,6 @@ public class UserService {
         User user = userStorage.getUserInStorage(userId);
         User friend = userStorage.getUserInStorage(friendId);
         Relationship newFriends = new Relationship(userId, friendId, true);
-       // user.removeInFriends(friendId);
-        //friend.removeInFriends(userId);
-        //userStorage.updateUserInStorage(user);
-        //userStorage.updateUserInStorage(friend);
         Set<Relationship> friends = new HashSet<Relationship>(relationshipDbStorage.getAllFriends(userId));
         if(!friends.contains(newFriends)) {
             throw new ValidationException("Ошибка: у пользователя c ID " + userId + " нет друга с ID " + friendId);
@@ -100,9 +92,6 @@ public class UserService {
         }
         User user = userStorage.getUserInStorage(userId);
         List<User> friends = new ArrayList<>();
-        //for (int id : user.getFriends().keySet()) {
-        //    friends.add(userStorage.getUserInStorage(id));
-        //}
         for (Relationship r: relationshipDbStorage.getAllFriends(userId)){
             friends.add(userStorage.getUserInStorage(r.getFriendId()));
         }

@@ -61,28 +61,4 @@ public class FilmController extends Controller<Film> {
         return filmService.getTopFilms(count);
     }
 
-    @ResponseBody
-    @GetMapping("/genres")
-    public Collection<Genre> getAllGenres() {
-        return filmService.getAllGenres();
-    }
-
-    @ResponseBody
-    @GetMapping("/genres/{id}")
-    public Genre getGenreById(@PathVariable int id) {
-        return filmService.getGenreById(id);
-    }
-
-    @ResponseBody
-    @GetMapping("/mpa")
-    public Collection<RatingMPA> getAllMPA() {
-        return filmService.getAllMPA();
-    }
-
-    @ResponseBody
-    @GetMapping("/mpa/{id}")
-    public RatingMPA getMPAById(@PathVariable int id) {
-        return filmService.getMPAById(id);
-    }
-
 }
