@@ -56,9 +56,6 @@ public class UserService {
     }
 
     public void addFriend(int userId, int friendId) {
-        if(userId<=0 || friendId<=0){
-            throw new NoSuchElementException("Пользователь или друг с таким ID не найден");
-        }
         User user = userStorage.getUserInStorage(userId);
         User friend = userStorage.getUserInStorage(friendId);
         Relationship newFriends = new Relationship(userId, friendId, true);
@@ -87,9 +84,6 @@ public class UserService {
     }
 
     public List<User> getAllFriends(int userId) {
-        if(userId<=0){
-            throw new NoSuchElementException("Пользователь с таким ID не найден");
-        }
         User user = userStorage.getUserInStorage(userId);
         List<User> friends = new ArrayList<>();
         for (Relationship r: relationshipDbStorage.getAllFriends(userId)){
@@ -102,9 +96,6 @@ public class UserService {
     }
 
     public List<User> getCommonFriends(int userId, int otherId) {
-        if(userId<=0 || otherId<=0){
-            throw new NoSuchElementException("Пользователь с таким ID не найден");
-        }
         User user = userStorage.getUserInStorage(userId);
         User otherUser = userStorage.getUserInStorage(otherId);
         List<Integer> commonFriendsId = new ArrayList<>(relationshipDbStorage.getCommonFriends(userId, otherId));
@@ -125,9 +116,6 @@ public class UserService {
     }
 
     public User getUser(int id) {
-        if(id<=0){
-            throw new NoSuchElementException("Пользователь с таким ID " + id + " не найден");
-        }
         User user = userStorage.getUserInStorage(id);
         log.info("Получение пользователя {}      Пользователь с ID {} получен успешно", LocalDateTime.now(), id);
         return user;

@@ -8,7 +8,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.Like;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
-import ru.yandex.practicum.filmorate.storage.likes.LikeDbStorage;
+import ru.yandex.practicum.filmorate.storage.like.LikeDbStorage;
 import ru.yandex.practicum.filmorate.storage.genre.GenreDbStorage;
 import ru.yandex.practicum.filmorate.storage.rating.RatingDbStorage;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
@@ -92,9 +92,6 @@ public class FilmService {
     }
 
     public void addLike(int filmId, int userId) {
-        if(filmId <= 0 || userId <= 0){
-            throw new NoSuchElementException("Фильм или пользователь по переданному ID не найден в БД");
-        }
         Film film = filmStorage.getFilmInStorage(filmId);
         Like like = new Like(filmId, userId);
         userStorage.getUserInStorage(userId); // контроль что такой пользователь есть
@@ -111,9 +108,6 @@ public class FilmService {
     }
 
     public void removeLike(int filmId, int userId) {
-        if(filmId <= 0 || userId <= 0){
-            throw new NoSuchElementException("Фильм или пользователь по переданному ID не найден в БД");
-        }
         Film film = filmStorage.getFilmInStorage(filmId);
         Like like = new Like(filmId, userId);
         userStorage.getUserInStorage(userId); // контроль что такой пользователь есть
@@ -146,9 +140,6 @@ public class FilmService {
     }
 
     public Film getFilm(int id) {
-        if(id<=0){
-            throw new NoSuchElementException("Фильм с таким ID " + id + " не найден");
-        }
         Film film = filmStorage.getFilmInStorage(id);
         log.info("Получение фильма {}      Фильм с ID {} получен успешно", LocalDateTime.now(), id);
         Collection<Genre> genres = genreDbStorage.getAllFilmGenres(id);

@@ -35,6 +35,15 @@ public class  ErrorHandler {
     }
 
     @ExceptionHandler
+    public ResponseEntity<Map<String, String>> handleIndexException(final IndexOutOfBoundsException e) {
+        log.info("Ошибка {}    Причина: {}", LocalDateTime.now(), e.getMessage());
+        return new ResponseEntity<>(
+                Map.of("error", e.getMessage()),
+                HttpStatus.NOT_FOUND
+        );
+    }
+
+    @ExceptionHandler
     public ResponseEntity<Map<String, String>> handleException(final RuntimeException e) {
         log.info("Ошибка {}    Причина: {}", LocalDateTime.now(), e.getMessage());
         return new ResponseEntity<>(
@@ -42,4 +51,5 @@ public class  ErrorHandler {
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
     }
+
 }

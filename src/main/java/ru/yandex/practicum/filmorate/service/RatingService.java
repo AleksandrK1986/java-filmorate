@@ -8,7 +8,6 @@ import ru.yandex.practicum.filmorate.storage.rating.RatingDbStorage;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.NoSuchElementException;
 
 @Slf4j
 @Service
@@ -27,9 +26,6 @@ public class RatingService {
     }
 
     public RatingMPA getMPAById(int id) {
-        if(id<=0){
-            throw new NoSuchElementException("Рейтинг с таким ID " + id + " не найден");
-        }
         log.info("Получение рейтинга по ID {}      Рейтинг c ID {} получен успешно",
                 LocalDateTime.now(), id);
         return ratingDbStorage.getMPAById(id);

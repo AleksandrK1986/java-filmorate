@@ -27,7 +27,7 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public int addFilmInStorage(Film film) {
-        String sqlQuery = "insert into \"films\"(" +
+        String sqlQuery = "insert into \"film\"(" +
                     "\"name\"," +
                     " \"description\"," +
                     " \"release_date\"," +
@@ -50,12 +50,12 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public void deleteFilmInStorage(int id) {
-        String sqlQuery = "delete from \"films\" where \"id\" = ?";
+        String sqlQuery = "delete from \"film\" where \"id\" = ?";
         jdbcTemplate.update(sqlQuery, id);
     }
     @Override
     public void updateFilmInStorage(Film film) {
-        String sqlQuery = "update \"films\" set" +
+        String sqlQuery = "update \"film\" set" +
                 "\"name\" = ?," +
                 " \"description\"= ?," +
                 " \"release_date\"= ?," +
@@ -83,7 +83,7 @@ public class FilmDbStorage implements FilmStorage {
                 "\"f\".\"rate\", " +
                 "\"f\".\"rating_mpa\"," +
                 "\"rm\".\"name\" \"rm_name\"" +
-                "from \"films\" as \"f\" " +
+                "from \"film\" as \"f\" " +
                 "join \"rating_mpa\" as \"rm\" on \"rm\".\"id\" = \"f\".\"rating_mpa\"";
         return jdbcTemplate.query(sql, (rs, rowNum) -> makeFilm(rs));
     }
@@ -99,7 +99,7 @@ public class FilmDbStorage implements FilmStorage {
                 "\"f\".\"rate\", " +
                 "\"f\".\"rating_mpa\"," +
                 "\"rm\".\"name\" \"rm_name\"" +
-                "from \"films\" as \"f\" " +
+                "from \"film\" as \"f\" " +
                 "join \"rating_mpa\" as \"rm\" on \"rm\".\"id\" = \"f\".\"rating_mpa\" " +
                 "where \"f\".\"id\" = ? ";
         return jdbcTemplate.query(sql, (rs, rowNum) -> makeFilm(rs), id).get(0);

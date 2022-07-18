@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.storage.likes;
+package ru.yandex.practicum.filmorate.storage.like;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -16,17 +16,17 @@ public class LikeDbStorage {
         this.jdbcTemplate = jdbcTemplate;
     }
     public void addLike(int filmId, int userId) {
-        String sqlQuery = "insert into \"likes\" values (?, ?)";
+        String sqlQuery = "insert into \"like\" values (?, ?)";
         jdbcTemplate.update(sqlQuery, filmId, userId);
     }
 
     public void removeLike(int filmId, int userId) {
-        String sqlQuery = "delete from \"likes\" where \"film_id\" = ? AND \"user_id\" = ?";
+        String sqlQuery = "delete from \"like\" where \"film_id\" = ? AND \"user_id\" = ?";
         jdbcTemplate.update(sqlQuery, filmId, userId);
     }
 
     public Collection<Like> getAllLikes(int filmId) {
-        String sql = "select * from \"likes\" where \"film_id\" = ?";
+        String sql = "select * from \"like\" where \"film_id\" = ?";
         return jdbcTemplate.query(sql, (rs, rowNum) -> makeLike(rs), filmId);
     }
 

@@ -26,7 +26,7 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public int addUserInStorage(User user) {
-        String sqlQuery = "insert into \"users\"(" +
+        String sqlQuery = "insert into \"user\"(" +
                 "\"email\"," +
                 " \"login\"," +
                 " \"name\"," +
@@ -44,12 +44,12 @@ public class UserDbStorage implements UserStorage {
     }
 
     public void deleteUserInStorage(int id) {
-        String sqlQuery = "delete from \"users\" where \"id\" = ?";
+        String sqlQuery = "delete from \"user\" where \"id\" = ?";
         jdbcTemplate.update(sqlQuery, id);
     }
 
     public void updateUserInStorage(User user) {
-        String sqlQuery = "update \"users\" set" +
+        String sqlQuery = "update \"user\" set" +
                 "\"email\" = ?," +
                 " \"login\"= ?," +
                 " \"name\"= ?," +
@@ -63,12 +63,12 @@ public class UserDbStorage implements UserStorage {
     }
 
     public Collection<User> getAllUsersInStorage() {
-        String sql = "select * from \"users\"";
+        String sql = "select * from \"user\"";
         return jdbcTemplate.query(sql, (rs, rowNum) -> makeUser(rs));
     }
 
     public User getUserInStorage(int id) {
-        String sql = "select * from \"users\" where \"id\" = ?";
+        String sql = "select * from \"user\" where \"id\" = ?";
         return jdbcTemplate.query(sql, (rs, rowNum) -> makeUser(rs), id).get(0);
     }
 

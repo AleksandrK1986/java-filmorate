@@ -8,7 +8,6 @@ import ru.yandex.practicum.filmorate.storage.genre.GenreDbStorage;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.NoSuchElementException;
 
 @Slf4j
 @Service
@@ -27,9 +26,6 @@ public class GenreService {
     }
 
     public Genre getGenreById(int id) {
-        if(id<=0){
-            throw new NoSuchElementException("Жанр с таким ID " + id + " не найден");
-        }
         log.info("Получение жанра по ID {}      Жанр c ID {} получен успешно",
                 LocalDateTime.now(), id);
         return genreDbStorage.getGenreById(id);
