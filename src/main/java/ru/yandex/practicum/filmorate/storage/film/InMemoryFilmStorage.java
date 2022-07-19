@@ -1,14 +1,13 @@
 package ru.yandex.practicum.filmorate.storage.film;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.Film;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 @Component
+@Qualifier("InMemoryFilmStorage")
 public class InMemoryFilmStorage implements FilmStorage {
     private HashMap<Integer, Film> filmsInStorage = new HashMap<>();
     private static int counter = 0;
@@ -39,9 +38,18 @@ public class InMemoryFilmStorage implements FilmStorage {
         }
     }
 
-    @Override
+   /* @Override
     public List<Film> getAllFilmsInStorage() {
         List<Film> films = new ArrayList<>();
+        for (Film f : filmsInStorage.values()) {
+            films.add(f);
+        }
+        return films;
+    }*/
+
+    @Override
+    public Collection<Film> getAllFilmsInStorage() {
+        Collection<Film> films = new ArrayList<>();
         for (Film f : filmsInStorage.values()) {
             films.add(f);
         }

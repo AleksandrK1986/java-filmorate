@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.storage.film;
 
 import ru.yandex.practicum.filmorate.model.Film;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface FilmStorage {
@@ -11,7 +12,7 @@ public interface FilmStorage {
 
     void updateFilmInStorage(Film film);
 
-    List<Film> getAllFilmsInStorage();
+    Collection<Film> getAllFilmsInStorage();
 
     Film getFilmInStorage(int id);
 

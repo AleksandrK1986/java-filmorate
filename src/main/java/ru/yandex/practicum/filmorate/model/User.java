@@ -6,10 +6,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -26,23 +23,10 @@ public class User {
     @Size(min = 0, max = 100)
     private String name;
     private LocalDate birthday;
-    //private Set<Integer> friends = new HashSet<>();
-    private HashMap<Integer, Boolean> friends = new HashMap<>(); // <id друга, подтверждена ли дружба true/false>
-    // Для отправителя заявки на друзья будет стоять true, для получателя заявки в друзья будет стоять false,
-    // пока не подтвердит. Возможно, при переходе на БД будет не актуально
 
     private int getNewId(){
         counter=counter+1;
         return counter;
-    }
-
-    public void addInFriends(int id) {
-        //friends.add(id);
-        friends.put(id, false);
-    }
-
-    public void removeInFriends(int id) {
-        friends.remove(id);
     }
 
     @Override

@@ -12,8 +12,9 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 @Slf4j
-@ControllerAdvice(assignableTypes = {FilmController.class, UserController.class})
-public class ErrorHandler {
+@ControllerAdvice(assignableTypes = {FilmController.class, UserController.class,
+        GenreController.class, RatingController.class})
+public class  ErrorHandler {
 
     @ExceptionHandler
     public ResponseEntity<Map<String, String>> handleValidation(final ValidationException e) {
@@ -34,6 +35,15 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler
+    public ResponseEntity<Map<String, String>> handleIndexException(final IndexOutOfBoundsException e) {
+        log.info("Ошибка {}    Причина: {}", LocalDateTime.now(), e.getMessage());
+        return new ResponseEntity<>(
+                Map.of("error", e.getMessage()),
+                HttpStatus.NOT_FOUND
+        );
+    }
+
+    @ExceptionHandler
     public ResponseEntity<Map<String, String>> handleException(final RuntimeException e) {
         log.info("Ошибка {}    Причина: {}", LocalDateTime.now(), e.getMessage());
         return new ResponseEntity<>(
@@ -41,4 +51,5 @@ public class ErrorHandler {
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
     }
+
 }
